@@ -688,23 +688,28 @@
         '#f97316', '#8b5cf6', '#14b8a6', '#e11d48', '#84cc16', '#6366f1'
       ];
 
-      const spinSound = new Audio('sound/spin.mp3');
+      const spinSound = new Audio('sound/spin1.mp3');
       const winnerSound = new Audio('sound/winner.mp3');
+      const crowdSound = new Audio('sound/celeb.mp3');
+      const fcrackSound = new Audio('sound/firecracker2.mp3');
 
       spinSound.preload = 'auto';
       winnerSound.preload = 'auto';
+      crowdSound.preload = 'auto';
+      fcrackSound.preload = 'auto';
 
       spinSound.load();
       winnerSound.load();
+      crowdSound.load();
+      fcrackSound.load();
 
-      spinSound.volume = 0.6;
-      winnerSound.volume = 0.85;
+      spinSound.volume = 0.40;
+      winnerSound.volume = 0.50;
+      crowdSound.volume = 0.60;
+      fcrackSound.volume = 1.00;
 
-      spinSound.volume = 0.6;
-      winnerSound.volume = 0.85;
-
-      // Spin sound কতক্ষণ চলবে
-      const SPIN_SOUND_DURATION = 5800; // milliseconds
+      // Spin sound 
+      const SPIN_SOUND_DURATION = 8000;
 
       let spinSoundTimer = null;
 
@@ -731,14 +736,87 @@
         spinSound.currentTime = 0;
       }
 
-      function playWinnerSound() {
-        winnerSound.pause();
-        winnerSound.currentTime = 0;
+      const CROWD_SOUND_DURATION = 5800; // total 2.5 sec
+      const CROWD_FADE_DURATION = 800;
 
+      let crowdSoundTimer = null;
+      let crowdFadeTimer = null;
+      let fcrackSoundTimer = null;
+
+      function playWinnerSound() {
+
+        // Previous sounds reset
+        winnerSound.pause();
+        crowdSound.pause();
+        fcrackSound.pause();
+
+        winnerSound.currentTime = 0;
+        crowdSound.currentTime = 0;
+        fcrackSound.currentTime = 0
+
+        // Crowd volume original level
+        crowdSound.volume = 0.55;
+        fcrackSound.volume = 0.55;
+
+        // Previous timers clear
+        clearTimeout(crowdSoundTimer);
+        clearInterval(crowdFadeTimer);
+
+
+
+        // Winner music
         winnerSound.play().catch(err => {
           console.warn('Winner sound error:', err);
         });
-      }
+
+        // Crowd sound
+        crowdSound.play().catch(err => {
+          console.warn('Crowd sound error:', err);
+        });
+
+        fcrackSound.play().catch(err => {
+          console.warn('Cracker sound error', err);
+        });
+
+        clearTimeout(fcrackSoundTimer);
+
+        fcrackSoundTimer = setTimeout(() => {
+          fcrackSound.pause();
+          fcrackSound.currentTime = 0;
+        }, 5800);
+
+
+        // Fade out start 
+        crowdSoundTimer = setTimeout(() => {
+
+          const startVolume = crowdSound.volume;
+          const fadeSteps = 20;
+          const stepTime = CROWD_FADE_DURATION / fadeSteps;
+          const volumeStep = startVolume / fadeSteps;
+
+          crowdFadeTimer = setInterval(() => {
+
+            crowdSound.volume = Math.max(
+              0,
+              crowdSound.volume - volumeStep
+            );
+
+            if (crowdSound.volume <= 0.01) {
+
+              clearInterval(crowdFadeTimer);
+              crowdFadeTimer = null;
+
+              crowdSound.pause();
+              crowdSound.currentTime = 0;
+
+              // volume restore
+              crowdSound.volume = 0.85;
+            }
+
+          }, stepTime);
+
+        }, CROWD_SOUND_DURATION - CROWD_FADE_DURATION);
+      };
 
       const els = {
         app: document.getElementById('app'),
@@ -821,9 +899,10 @@
       }
 
       // Display rank is intentionally the reverse of the original spin order.
-      // The newest winner is always #1, the previous winner becomes #2, etc. Reverse order created by Argho
+
       function getWinnerDisplayRank(winnerRecord) {
-        return state.winners.length - winnerRecord.order + 1;
+        // return state.winners.length - winnerRecord.order + 1;  // The newest winner is always #1, the previous winner becomes #2, etc. Reverse order created by Argho
+        return winnerRecord.order;
       }
 
       function getOrdinal(number) {
@@ -1138,11 +1217,13 @@
           els.spinBtn.textContent = state.participants.length ? 'DONE' : 'SPIN';
           els.spinBtn.classList.remove('pulse-ready');
           els.wheelStatus.textContent = state.participants.length ? 'Draw Complete — all participants selected.' : 'অন্তত ২ জন অংশগ্রহণকারী যোগ করুন';
+
         } else if (active.length === 1) {
           els.spinBtn.disabled = locked;
           els.spinBtn.textContent = locked ? 'WAIT' : 'REVEAL';
           els.spinBtn.classList.toggle('pulse-ready', !locked);
           els.wheelStatus.textContent = 'Only one participant remains. Reveal the final winner.';
+
         } else {
           els.spinBtn.disabled = locked;
           els.spinBtn.textContent = isSpinning ? 'SPINNING' : (isCelebrating ? 'WAIT' : 'SPIN');
@@ -1173,7 +1254,7 @@
         const extraTurns = 7 + secureRandomInt(5);
         const startRotation = state.currentRotation;
         const targetRotation = calculateWinnerAngle(winner.id, extraTurns);
-        const duration = reducedMotion ? 900 : 5400 + secureRandomInt(1200);
+        const duration = reducedMotion ? 900 : 8000 + secureRandomInt(1200);
         const startedAt = performance.now();
 
         isSpinning = true;
@@ -1267,16 +1348,16 @@
         }
 
         if (!record) {
-          els.winnerCard.innerHTML = '<div><div class="text-4xl mb-3 opacity-60">🎯</div><p class="text-sm text-slate-400">স্পিন হুইল ঘুরান, আর বেছে নিন আজকের ভাগ্যবান বিজয়ী!</p></div>';
+          els.winnerCard.innerHTML = '<div><div class="text-3xl mb-3 opacity-60">🎯</div><p class="text-sm text-slate-400">স্পিন হুইল ঘুরান, আর বেছে নিন আজকের ভাগ্যবান বিজয়ী!</p></div>';
           return;
         }
 
         const time = new Date(record.selectedAt);
         els.winnerCard.innerHTML = `
           <div class="w-full">
-            <div class="text-4xl mb-2 text-amber-400"><i class="fa-solid fa-trophy"></i></div>
-            <div class="text-xs font-bold tracking-[.28em] uppercase text-amber-300">Winner #1</div>
-            <div class="mt-2 text-2xl sm:text-3xl font-bold break-words">${escapeHTML(record.name)}</div>
+           
+            <div class="text-5xl font-bold uppercase text-amber-500">বিজয়ী</div>
+            <div class="mt-2 text-2xl sm:text-3xl font-semibold break-words">${escapeHTML(record.name)}</div>
             <div class="mt-2 text-xs text-slate-400">${time.toLocaleString()}</div>
           </div>
         `;
