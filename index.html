@@ -508,6 +508,150 @@
         margin-top: 22px;
       }
     }
+
+    /* =========================
+   Prize Images Around Wheel
+========================= */
+
+    .prize-float {
+      position: absolute;
+      width: clamp(55px, 7vw, 95px);
+      height: clamp(55px, 7vw, 95px);
+      object-fit: contain;
+
+      z-index: 11;
+      pointer-events: none;
+      user-select: none;
+
+      filter:
+        drop-shadow(0 10px 12px rgba(0, 0, 0, .25)) drop-shadow(0 0 12px rgba(255, 255, 255, .18));
+
+      animation: prizeFloating 3s ease-in-out infinite;
+    }
+
+
+    /* Prize positions */
+
+    .prize-1 {
+      top: 2%;
+      left: -8%;
+
+      width: clamp(90px, 11vw, 145px);
+      height: clamp(90px, 11vw, 145px);
+
+      animation-delay: 0s;
+      z-index: 13;
+    }
+
+    .prize-2 {
+      top: 5%;
+      right: -5%;
+      animation-delay: .4s;
+    }
+
+    .prize-3 {
+      top: 46%;
+      right: -8%;
+      animation-delay: .8s;
+    }
+
+    .prize-4 {
+      bottom: -1%;
+      right: 8%;
+      animation-delay: 1.2s;
+    }
+
+    .prize-5 {
+      bottom: 3%;
+      left: 2%;
+      animation-delay: 1.6s;
+    }
+
+
+    /* Soft floating animation */
+
+    @keyframes prizeFloating {
+
+      0% {
+        transform: translateY(0px) rotate(-3deg) scale(1);
+      }
+
+      50% {
+        transform: translateY(-10px) rotate(3deg) scale(1.05);
+      }
+
+      100% {
+        transform: translateY(3px) rotate(-2deg) scale(1);
+      }
+    }
+
+    @media (max-width: 768px) {
+
+      #wheelWrap {
+        width: min(88vw, 560px);
+      }
+
+      .prize-float {
+        width: clamp(42px, 13vw, 68px);
+        height: clamp(42px, 13vw, 68px);
+      }
+
+      .prize-1 {
+        top: 3%;
+        left: -1%;
+      }
+
+      .prize-2 {
+        top: 4%;
+        right: -1%;
+      }
+
+      .prize-3 {
+        top: 48%;
+        right: -2%;
+      }
+
+      .prize-4 {
+        bottom: 1%;
+        right: 7%;
+      }
+
+      .prize-5 {
+        bottom: 3%;
+        left: 3%;
+      }
+    }
+
+
+    @media (max-width: 480px) {
+
+      #wheelWrap {
+        width: 92vw;
+      }
+
+      .prize-float {
+        width: 48px;
+        height: 48px;
+      }
+
+      @media (max-width: 768px) {
+        .prize-1 {
+          width: clamp(70px, 18vw, 100px);
+          height: clamp(70px, 18vw, 100px);
+
+          top: 1%;
+          left: -2%;
+        }
+      }
+
+      .prize-2 {
+        right: 1%;
+      }
+
+      .prize-3 {
+        right: 0;
+      }
+    }
   </style>
 </head>
 
@@ -608,12 +752,24 @@
             </div>
 
             <div id="wheelWrap">
+
               <canvas id="wheelCanvas" width="900" height="900" aria-label="Spinning wheel"></canvas>
+
+              <!-- Prize Images -->
+              <img src="/images/1.png" class="prize-float prize-1 w-19 h-19" alt="Prize 1">
+              <img src="/images/2.png" class="prize-float prize-2" alt="Prize 2">
+              <img src="/images/3.png" class="prize-float prize-4" alt="Prize 3">
+              <img src="/images/4.png" class="prize-float prize-5" alt="Prize 4">
+
               <div class="pointer" aria-hidden="true"></div>
-              <button id="spinBtn" class="spin-core pulse-ready text-sm sm:text-xl md:text-2xl" disabled>SPIN</button>
+
+              <button id="spinBtn" class="spin-core pulse-ready text-sm sm:text-xl md:text-2xl" disabled>
+                SPIN
+              </button>
             </div>
 
           </div>
+
         </section>
 
         <aside class="order-3 glass rounded-3xl p-4 sm:p-5 lg:sticky lg:top-5">
