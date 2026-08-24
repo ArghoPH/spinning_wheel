@@ -16,7 +16,9 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
+  <!-- Font awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css">
+
   <style>
     :root {
       color-scheme: dark;
@@ -534,7 +536,7 @@
 
     .prize-1 {
       top: 2%;
-      left: -8%;
+      left: -20%;
 
       width: clamp(90px, 11vw, 145px);
       height: clamp(90px, 11vw, 145px);
@@ -545,25 +547,25 @@
 
     .prize-2 {
       top: 5%;
-      right: -5%;
+      right: -10%;
       animation-delay: .4s;
     }
 
     .prize-3 {
       top: 46%;
-      right: -8%;
+      right: -10%;
       animation-delay: .8s;
     }
 
     .prize-4 {
-      bottom: -1%;
-      right: 8%;
+      bottom: 9%;
+      right: -7%;
       animation-delay: 1.2s;
     }
 
     .prize-5 {
-      bottom: 3%;
-      left: 2%;
+      bottom: 12%;
+      left: -10%;
       animation-delay: 1.6s;
     }
 
@@ -660,10 +662,10 @@
 
   <div id="winnerOverlay" aria-hidden="true">
     <div class="winner-pop">
-      <div class="winner-trophy text-6xl md:text-7xl mb-3">🏆</div>
-      <div class="text-sm md:text-base tracking-[.35em] uppercase text-cyan-300 font-extrabold">Congratulations</div>
+      <div class="winner-trophy text-6xl md:text-7xl mb-3 text-amber-300"><i class="fa fa-trophy"></i></div>
+      <div class="text-sm md:text-base tracking-[.35em] uppercase text-cyan-300 font-extrabold">অভিনন্দন!</div>
       <div id="overlayWinnerName" class="mt-3 text-4xl md:text-6xl font-bold break-words"></div>
-      <div class="mt-3 text-slate-300 text-base md:text-lg">You are the winner!</div>
+      <div class="mt-3 text-slate-300 text-base md:text-lg">আপনি বিজয়ী হয়েছেন!</div>
     </div>
   </div>
 
@@ -688,7 +690,7 @@
       <header class="mb-5 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
 
-          <h1 class="mt-3 text-2xl sm:text-3xl lg:text-4xl font-bold">কে হবে আজকের ভাগ্যবান বিজয়ী ?
+          <h1 class="mt-3 text-2xl sm:text-3xl lg:text-4xl font-bold">কে হবে বিশ্বকাপ কুইজের বিজয়ী ?
           </h1>
         </div>
         <div class="flex flex-wrap gap-2">
@@ -757,20 +759,25 @@
 
               <!-- Prize Images -->
               <div class="prize-float prize-1 w-19 h-19">
-                <div class="prize-label">1st Prize</div>
-                <img src="./images/1.png" alt="1st Prize">
+                <div class="prize-label">1st Prize World cup Final</div>
+                <img src="./images/cup1.png" alt="1st Prize">
+                <div class="prize-label">TECNO SPARK 50</div>
               </div>
-              <div class="prize-float prize-2 w-19 h-19">
-                <div class="prize-label">2nd Prize</div>
-                <img src="./images/2.png" alt="2nd Prize">
+              <div class="prize-float prize-2">
+                <div class="prize-label">2nd Prize World cup Final</div>
+                <img src="./images/cup2.png" alt="2nd Prize">
+                <div class="prize-label">Smart Watch</div>
               </div>
-              <div class="prize-float prize-4 w-19 h-19">
-                <div class="prize-label">3rd Prize</div>
-                <img src="./images/3.png" alt="3rd Prize">
+              <div class="prize-float prize-4">
+                <div class="prize-label">3rd Prize World cup Final</div>
+                <img src="./images/cup3.png" alt="3rd Prize">
+                <div class="prize-label">Headphone</div>
               </div>
-              <div class="prize-float prize-5 w-19 h-19">
-                <div class="prize-label">4th Prize</div>
-                <img src="./images/4.png" alt="4th Prize">
+              <div class="prize-float prize-5">
+                <div class="prize-label whitespace-nowrap">Semi Final</div>
+                <div class="prize-label whitespace-nowrap">6 Winners</div>
+                <img src="./images/cup4.png" alt="4th Prize">
+                <div class="prize-label">Bluetooth Speaker</div>
               </div>
 
               <div class="pointer" aria-hidden="true"></div>
